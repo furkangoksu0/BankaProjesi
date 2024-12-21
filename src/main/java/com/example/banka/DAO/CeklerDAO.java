@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class CeklerDAO {
@@ -18,7 +19,7 @@ public class CeklerDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Çek Ekleme
+
     public void addCek(Cekler cek) {
         String sql = "INSERT INTO cekler (cek_numarasi, kesilme_tarihi, vade_tarihi, tutar, hesap_id) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
@@ -29,19 +30,51 @@ public class CeklerDAO {
                 cek.getHesapId());
     }
 
-    // Tüm Çekleri Getirme
     public List<Cekler> getAllCekler() {
         String sql = "SELECT * FROM cekler";
         return jdbcTemplate.query(sql, new CeklerRowMapper());
     }
 
-    // Belirli Bir Çeki Getirme
     public Cekler getCekById(Long cekId) {
         String sql = "SELECT * FROM cekler WHERE cek_id = ?";
         return jdbcTemplate.queryForObject(sql, new CeklerRowMapper(), cekId);
     }
+    public List<Map<String, Object>> getAllCeklerByMusteri() {
+        String sql = """
+            SELECT c.cek_id, c.cek_numarasi, c.kesilme_tarihi, c.vade_tarihi, c.tutar,
+                   m.ad AS musteri_ad, m.soyad AS musteri_soyad, h.hesap_adi
+            FROM cekler c
+            JOIN hesaplar h ON c.hesap_id = h.hesap_id
+            JOIN musteriler m ON h.musteri_id = m.musteri_id
+        """;
+        return jdbcTemplate.queryForList(sql);
+    }
 
-    // Çek Güncelleme
+
+    public List<Map<String, Object>> getCeklerByMusteriId(Long musteriId) {
+        String sql = """
+            SELECT c.cek_id, c.cek_numarasi, c.kesilme_tarihi, c.vade_tarihi, c.tutar,
+                   m.ad AS musteri_ad, m.soyad AS musteri_soyad, h.hesap_adi
+            FROM cekler c
+            JOIN hesaplar h ON c.hesap_id = h.hesap_id
+            JOIN musteriler m ON h.musteri_id = m.musteri_id
+            WHERE m.musteri_id = ?
+        """;
+        return jdbcTemplate.queryForList(sql, musteriId);
+    }
+
+
+    public List<Map<String, Object>> getCeklerByHesapId(Long hesapId) {
+        String sql = """
+            SELECT c.cek_id, c.cek_numarasi, c.kesilme_tarihi, c.vade_tarihi, c.tutar,
+                   h.hesap_adi
+            FROM cekler c
+            JOIN hesaplar h ON c.hesap_id = h.hesap_id
+            WHERE c.hesap_id = ?
+        """;
+        return jdbcTemplate.queryForList(sql, hesapId);
+    }
+
     public void updateCek(Cekler cek) {
         String sql = "UPDATE cekler SET cek_numarasi = ?, kesilme_tarihi = ?, vade_tarihi = ?, tutar = ?, hesap_id = ? WHERE cek_id = ?";
         jdbcTemplate.update(sql,
@@ -53,13 +86,11 @@ public class CeklerDAO {
                 cek.getCekId());
     }
 
-    // Çek Silme
     public void deleteCek(Long cekId) {
         String sql = "DELETE FROM cekler WHERE cek_id = ?";
         jdbcTemplate.update(sql, cekId);
     }
 
-    // RowMapper Sınıfı
     private static class CeklerRowMapper implements RowMapper<Cekler> {
         @Override
         public Cekler mapRow(ResultSet rs, int rowNum) throws SQLException {

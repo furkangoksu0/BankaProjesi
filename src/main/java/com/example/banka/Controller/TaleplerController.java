@@ -5,6 +5,7 @@ import com.example.banka.Service.TaleplerService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/talepler")
@@ -24,6 +25,15 @@ public class TaleplerController {
     @GetMapping
     public List<Talepler> getAllTalepler() {
         return taleplerService.getAllTalepler();
+    }
+    @GetMapping("/by-musteri")
+    public List<Map<String, Object>> getAllTaleplerByMusteri() {
+        return taleplerService.getAllTaleplerByMusteri();
+    }
+
+    @GetMapping("/musteri/{musteriId}")
+    public List<Map<String, Object>> getTaleplerByMusteriId(@PathVariable Long musteriId) {
+        return taleplerService.getTaleplerByMusteriId(musteriId);
     }
 
     @GetMapping("/{id}")

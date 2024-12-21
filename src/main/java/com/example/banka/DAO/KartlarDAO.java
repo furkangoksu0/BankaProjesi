@@ -19,7 +19,6 @@ public class KartlarDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
     public void addKart(Kartlar kart) {
         String sql = "INSERT INTO kartlar (kart_numarasi, kart_turu, hesap_id, vade_tarihi, kart_limit) " +
                 "VALUES (?, ?, ?, ?, ?)";
@@ -36,6 +35,7 @@ public class KartlarDAO {
         String sql = "SELECT * FROM kartlar";
         return jdbcTemplate.query(sql, new KartlarRowMapper());
     }
+
     public List<Map<String, Object>> getKartlarByHesapId(Long hesapId) {
         String sql = """
             SELECT 
@@ -53,8 +53,6 @@ public class KartlarDAO {
         """;
         return jdbcTemplate.queryForList(sql, hesapId);
     }
-
-
 
     public Kartlar getKartById(Long kartId) {
         String sql = "SELECT * FROM kartlar WHERE kart_id = ?";

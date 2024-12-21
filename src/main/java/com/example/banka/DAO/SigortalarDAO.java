@@ -18,7 +18,7 @@ public class SigortalarDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Sigorta Ekleme
+
     public void addSigorta(Sigortalar sigorta) {
         String sql = "INSERT INTO sigortalar (sigorta_turu, baslangic_tarihi, bitis_tarihi, prim_tutari, musteri_id) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
@@ -29,19 +29,19 @@ public class SigortalarDAO {
                 sigorta.getMusteriId());
     }
 
-    // Tüm Sigortaları Getirme
+
     public List<Sigortalar> getAllSigortalar() {
         String sql = "SELECT * FROM sigortalar";
         return jdbcTemplate.query(sql, new SigortalarRowMapper());
     }
 
-    // Belirli Bir Sigortayı Getirme
+
     public Sigortalar getSigortaById(Long sigortaId) {
         String sql = "SELECT * FROM sigortalar WHERE sigorta_id = ?";
         return jdbcTemplate.queryForObject(sql, new SigortalarRowMapper(), sigortaId);
     }
 
-    // Sigorta Güncelleme
+
     public void updateSigorta(Sigortalar sigorta) {
         String sql = "UPDATE sigortalar SET sigorta_turu = ?, baslangic_tarihi = ?, bitis_tarihi = ?, prim_tutari = ?, musteri_id = ? WHERE sigorta_id = ?";
         jdbcTemplate.update(sql,
@@ -53,13 +53,13 @@ public class SigortalarDAO {
                 sigorta.getSigortaId());
     }
 
-    // Sigorta Silme
+
     public void deleteSigorta(Long sigortaId) {
         String sql = "DELETE FROM sigortalar WHERE sigorta_id = ?";
         jdbcTemplate.update(sql, sigortaId);
     }
 
-    // RowMapper Sınıfı
+
     private static class SigortalarRowMapper implements RowMapper<Sigortalar> {
         @Override
         public Sigortalar mapRow(ResultSet rs, int rowNum) throws SQLException {

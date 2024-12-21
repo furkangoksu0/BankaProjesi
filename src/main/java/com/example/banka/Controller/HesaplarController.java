@@ -26,6 +26,7 @@ public class HesaplarController {
     public List<Hesaplar> getAllHesaplar() {
         return hesaplarService.getAllHesaplar();
     }
+
     @GetMapping("/musteriler/{musteriId}")
     public List<Map<String, Object>> getHesaplarByMusteriId(@PathVariable Long musteriId) {
         return hesaplarService.getHesaplarByMusteriId(musteriId);

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class NakitAvansDAO {
@@ -18,7 +19,7 @@ public class NakitAvansDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Nakit Avans Ekleme
+
     public void addNakitAvans(NakitAvans avans) {
         String sql = "INSERT INTO nakit_avans (kart_id, avans_tutari, avans_tarihi, odenen_tutar) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql,
@@ -28,19 +29,57 @@ public class NakitAvansDAO {
                 avans.getOdenenTutar());
     }
 
-    // Tüm Nakit Avansları Getirme
+
     public List<NakitAvans> getAllNakitAvans() {
         String sql = "SELECT * FROM nakit_avans";
         return jdbcTemplate.query(sql, new NakitAvansRowMapper());
     }
 
-    // Belirli Nakit Avansı Getirme
+    public List<Map<String, Object>> getAllNakitAvansbyMusteri() {
+        String sql = """
+            SELECT na.avans_id, na.avans_tutari, na.avans_tarihi, na.odenen_tutar, 
+                   k.kart_numarasi, h.hesap_adi, m.ad AS musteri_ad, m.soyad AS musteri_soyad
+            FROM nakit_avans na
+            JOIN kartlar k ON na.kart_id = k.kart_id
+            JOIN hesaplar h ON k.hesap_id = h.hesap_id
+            JOIN musteriler m ON h.musteri_id = m.musteri_id
+        """;
+        return jdbcTemplate.queryForList(sql);
+    }
+
+
     public NakitAvans getNakitAvansById(Long avansId) {
         String sql = "SELECT * FROM nakit_avans WHERE avans_id = ?";
         return jdbcTemplate.queryForObject(sql, new NakitAvansRowMapper(), avansId);
     }
 
-    // Nakit Avans Güncelleme
+    public List<Map<String, Object>> getNakitAvansByMusteriId(Long musteriId) {
+        String sql = """
+            SELECT na.avans_id, na.avans_tutari, na.avans_tarihi, na.odenen_tutar, 
+                   k.kart_numarasi, h.hesap_adi, m.ad AS musteri_ad, m.soyad AS musteri_soyad
+            FROM nakit_avans na
+            JOIN kartlar k ON na.kart_id = k.kart_id
+            JOIN hesaplar h ON k.hesap_id = h.hesap_id
+            JOIN musteriler m ON h.musteri_id = m.musteri_id
+            WHERE m.musteri_id = ?
+        """;
+        return jdbcTemplate.queryForList(sql, musteriId);
+    }
+
+
+    public List<Map<String, Object>> getNakitAvansByKartNumarasi(String kartNumarasi) {
+        String sql = """
+            SELECT na.avans_id, na.avans_tutari, na.avans_tarihi, na.odenen_tutar, 
+                   k.kart_numarasi, h.hesap_adi, m.ad AS musteri_ad, m.soyad AS musteri_soyad
+            FROM nakit_avans na
+            JOIN kartlar k ON na.kart_id = k.kart_id
+            JOIN hesaplar h ON k.hesap_id = h.hesap_id
+            JOIN musteriler m ON h.musteri_id = m.musteri_id
+            WHERE k.kart_numarasi = ?
+        """;
+        return jdbcTemplate.queryForList(sql, kartNumarasi);
+    }
+
     public void updateNakitAvans(NakitAvans avans) {
         String sql = "UPDATE nakit_avans SET avans_tutari = ?, avans_tarihi = ?, odenen_tutar = ? WHERE avans_id = ?";
         jdbcTemplate.update(sql,
@@ -50,13 +89,13 @@ public class NakitAvansDAO {
                 avans.getAvansId());
     }
 
-    // Nakit Avans Silme
+
     public void deleteNakitAvans(Long avansId) {
         String sql = "DELETE FROM nakit_avans WHERE avans_id = ?";
         jdbcTemplate.update(sql, avansId);
     }
 
-    // RowMapper Sınıfı
+
     private static class NakitAvansRowMapper implements RowMapper<NakitAvans> {
         @Override
         public NakitAvans mapRow(ResultSet rs, int rowNum) throws SQLException {

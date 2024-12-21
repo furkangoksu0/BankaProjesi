@@ -5,6 +5,7 @@ import com.example.banka.Service.CeklerService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/cekler")
@@ -24,6 +25,20 @@ public class CeklerController {
     @GetMapping
     public List<Cekler> getAllCekler() {
         return ceklerService.getAllCekler();
+    }
+    @GetMapping("/by-musteri")
+    public List<Map<String, Object>> getAllCeklerByMusteri() {
+        return ceklerService.getAllCeklerByMusteri();
+    }
+
+    @GetMapping("/musteri/{musteriId}")
+    public List<Map<String, Object>> getCeklerByMusteriId(@PathVariable Long musteriId) {
+        return ceklerService.getCeklerByMusteriId(musteriId);
+    }
+
+    @GetMapping("/hesap/{hesapId}")
+    public List<Map<String, Object>> getCeklerByHesapId(@PathVariable Long hesapId) {
+        return ceklerService.getCeklerByHesapId(hesapId);
     }
 
     @GetMapping("/{id}")

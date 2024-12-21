@@ -5,6 +5,7 @@ import com.example.banka.Service.EftService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/eft")
@@ -29,6 +30,22 @@ public class EftController {
     @GetMapping("/{id}")
     public Eft getEftById(@PathVariable("id") Long eftId) {
         return eftService.getEftById(eftId);
+    }
+    @GetMapping("/by-musteri")
+    public List<Map<String, Object>> getAllEftByMusteri() {
+        return eftService.getAllEftByMusteri();
+    }
+
+
+    @GetMapping("/musteri/{musteriId}")
+    public List<Map<String, Object>> getEftByMusteriId(@PathVariable Long musteriId) {
+        return eftService.getEftByMusteriId(musteriId);
+    }
+
+
+    @GetMapping("/hesap/{hesapId}")
+    public List<Map<String, Object>> getEftByHesapId(@PathVariable Long hesapId) {
+        return eftService.getEftByHesapId(hesapId);
     }
 
     @PutMapping

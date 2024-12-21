@@ -5,6 +5,7 @@ import com.example.banka.Entity.Talepler;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TaleplerService {
@@ -22,6 +23,15 @@ public class TaleplerService {
     public List<Talepler> getAllTalepler() {
         return taleplerDAO.getAllTalepler();
     }
+
+    public List<Map<String, Object>> getAllTaleplerByMusteri() {
+        return taleplerDAO.getAllTaleplerByMusteri();
+    }
+
+    public List<Map<String, Object>> getTaleplerByMusteriId(Long musteriId) {
+        return taleplerDAO.getTaleplerByMusteriId(musteriId);
+    }
+
 
     public Talepler getTalepById(Long talepId) {
         return taleplerDAO.getTalepById(talepId);

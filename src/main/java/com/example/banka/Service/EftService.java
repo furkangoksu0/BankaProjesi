@@ -5,6 +5,7 @@ import com.example.banka.Entity.Eft;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EftService {
@@ -21,6 +22,18 @@ public class EftService {
 
     public List<Eft> getAllEft() {
         return eftDAO.getAllEft();
+    }
+    
+    public List<Map<String, Object>> getAllEftByMusteri() {
+        return eftDAO.getAllEftByMusteri();
+    }
+
+    public List<Map<String, Object>> getEftByMusteriId(Long musteriId) {
+        return eftDAO.getEftByMusteriId(musteriId);
+    }
+
+    public List<Map<String, Object>> getEftByHesapId(Long hesapId) {
+        return eftDAO.getEftByHesapId(hesapId);
     }
 
     public Eft getEftById(Long eftId) {

@@ -18,7 +18,7 @@ public class KrediPlanlariDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Plan Ekleme
+
     public void addPlan(KrediPlanlari plan) {
         String sql = "INSERT INTO kredi_planlari (kredi_id, odeme_tarihi, odenen_tutar, kalan_borc) " +
                 "VALUES (?, ?, ?, ?)";
@@ -29,25 +29,25 @@ public class KrediPlanlariDAO {
                 plan.getKalanBorc());
     }
 
-    // Tüm Planları Getirme
+
     public List<KrediPlanlari> getAllPlans() {
         String sql = "SELECT * FROM kredi_planlari";
         return jdbcTemplate.query(sql, new KrediPlanlariRowMapper());
     }
 
-    // Plan Bulma (ID ile)
+
     public KrediPlanlari getPlanById(Long planId) {
         String sql = "SELECT * FROM kredi_planlari WHERE plan_id = ?";
         return jdbcTemplate.queryForObject(sql, new KrediPlanlariRowMapper(), planId);
     }
 
-    // Plan Silme
+
     public void deletePlan(Long planId) {
         String sql = "DELETE FROM kredi_planlari WHERE plan_id = ?";
         jdbcTemplate.update(sql, planId);
     }
 
-    // RowMapper Sınıfı
+
     private static class KrediPlanlariRowMapper implements RowMapper<KrediPlanlari> {
         @Override
         public KrediPlanlari mapRow(ResultSet rs, int rowNum) throws SQLException {

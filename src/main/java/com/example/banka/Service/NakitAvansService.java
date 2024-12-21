@@ -5,6 +5,7 @@ import com.example.banka.Entity.NakitAvans;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class NakitAvansService {
@@ -21,6 +22,19 @@ public class NakitAvansService {
 
     public List<NakitAvans> getAllNakitAvans() {
         return nakitAvansDAO.getAllNakitAvans();
+    }
+    public List<Map<String, Object>> getAllNakitAvansbyMusteri() {
+        return nakitAvansDAO.getAllNakitAvansbyMusteri();
+    }
+
+
+
+    public List<Map<String, Object>> getNakitAvansByMusteriId(Long musteriId) {
+        return nakitAvansDAO.getNakitAvansByMusteriId(musteriId);
+    }
+
+    public List<Map<String, Object>> getNakitAvansByKartNumarasi(String kartNumarasi) {
+        return nakitAvansDAO.getNakitAvansByKartNumarasi(kartNumarasi);
     }
 
     public NakitAvans getNakitAvansById(Long avansId) {

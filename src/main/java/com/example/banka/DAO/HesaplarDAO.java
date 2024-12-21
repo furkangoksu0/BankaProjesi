@@ -53,7 +53,6 @@ public class HesaplarDAO {
         return jdbcTemplate.queryForList(sql, musteriId);
     }
 
-
     public List<Map<String, Object>> getHesapKartlari(Long hesapId) {
         String sql = """
             SELECT 
@@ -71,7 +70,6 @@ public class HesaplarDAO {
         """;
         return jdbcTemplate.queryForList(sql, hesapId);
     }
-
 
     public List<Map<String, Object>> getHesapIslemleri(Long hesapId) {
         String sql = """
@@ -92,18 +90,15 @@ public class HesaplarDAO {
         return jdbcTemplate.queryForList(sql, hesapId);
     }
 
-
     public Hesaplar getHesapById(Long hesapId) {
         String sql = "SELECT * FROM hesaplar WHERE hesap_id = ?";
         return jdbcTemplate.queryForObject(sql, new HesaplarRowMapper(), hesapId);
     }
 
-
     public void deleteHesap(Long hesapId) {
         String sql = "DELETE FROM hesaplar WHERE hesap_id = ?";
         jdbcTemplate.update(sql, hesapId);
     }
-
 
     private static class HesaplarRowMapper implements RowMapper<Hesaplar> {
         @Override

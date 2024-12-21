@@ -18,7 +18,7 @@ public class KrediOdemeleriDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Ödeme Ekleme
+
     public void addOdeme(KrediOdemeleri odeme) {
         String sql = "INSERT INTO kredi_odemeleri (kredi_id, odeme_tarihi, odenen_tutar, odeme_turu) " +
                 "VALUES (?, ?, ?, ?)";
@@ -29,25 +29,24 @@ public class KrediOdemeleriDAO {
                 odeme.getOdemeTuru());
     }
 
-    // Tüm Ödemeleri Getirme
+
     public List<KrediOdemeleri> getAllOdemeler() {
         String sql = "SELECT * FROM kredi_odemeleri";
         return jdbcTemplate.query(sql, new KrediOdemeleriRowMapper());
     }
 
-    // Ödeme Bulma (ID ile)
+
     public KrediOdemeleri getOdemeById(Long odemeId) {
         String sql = "SELECT * FROM kredi_odemeleri WHERE odeme_id = ?";
         return jdbcTemplate.queryForObject(sql, new KrediOdemeleriRowMapper(), odemeId);
     }
 
-    // Ödeme Silme
+
     public void deleteOdeme(Long odemeId) {
         String sql = "DELETE FROM kredi_odemeleri WHERE odeme_id = ?";
         jdbcTemplate.update(sql, odemeId);
     }
 
-    // RowMapper Sınıfı
     private static class KrediOdemeleriRowMapper implements RowMapper<KrediOdemeleri> {
         @Override
         public KrediOdemeleri mapRow(ResultSet rs, int rowNum) throws SQLException {

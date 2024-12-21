@@ -19,7 +19,6 @@ public class KredilerDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
     public void addKredi(Krediler kredi) {
         String sql = "INSERT INTO krediler (kalan_borc, alinan_borc, odenen_miktar, vade, musteri_id) " +
                 "VALUES (?, ?, ?, ?, ?)";
@@ -31,11 +30,11 @@ public class KredilerDAO {
                 kredi.getMusteriId());
     }
 
-
     public List<Krediler> getAllKrediler() {
         String sql = "SELECT * FROM krediler";
         return jdbcTemplate.query(sql, new KredilerRowMapper());
     }
+
     public List<Map<String, Object>> getKredilerByMusteriId(Long musteriId) {
         String sql = """
             SELECT 
@@ -52,18 +51,15 @@ public class KredilerDAO {
         return jdbcTemplate.queryForList(sql, musteriId);
     }
 
-
     public Krediler getKrediById(Long krediId) {
         String sql = "SELECT * FROM krediler WHERE kredi_id = ?";
         return jdbcTemplate.queryForObject(sql, new KredilerRowMapper(), krediId);
     }
 
-
     public void deleteKredi(Long krediId) {
         String sql = "DELETE FROM krediler WHERE kredi_id = ?";
         jdbcTemplate.update(sql, krediId);
     }
-
 
     private static class KredilerRowMapper implements RowMapper<Krediler> {
         @Override

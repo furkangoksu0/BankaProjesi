@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class KrediKartiBorclariDAO {
@@ -18,7 +19,7 @@ public class KrediKartiBorclariDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Borç Ekleme
+
     public void addBorc(KrediKartiBorclari borc) {
         String sql = "INSERT INTO kredi_karti_borclari (kart_id, borc_tutari, son_odeme_tarihi, odenen_tutar) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql,
@@ -28,19 +29,43 @@ public class KrediKartiBorclariDAO {
                 borc.getOdenenTutar());
     }
 
-    // Tüm Borçları Getirme
+
     public List<KrediKartiBorclari> getAllBorclar() {
         String sql = "SELECT * FROM kredi_karti_borclari";
         return jdbcTemplate.query(sql, new KrediKartiBorclariRowMapper());
     }
 
-    // Belirli Borcu Getirme
+    public List<Map<String, Object>> getAllMusteriKartBorclari() {
+        String sql = """
+            SELECT m.musteri_id, m.ad, m.soyad, h.hesap_id, h.hesap_adi, k.kart_id, k.kart_numarasi, kkb.borc_tutari, kkb.son_odeme_tarihi, kkb.odenen_tutar
+            FROM kredi_karti_borclari kkb
+            JOIN kartlar k ON kkb.kart_id = k.kart_id
+            JOIN hesaplar h ON k.hesap_id = h.hesap_id
+            JOIN musteriler m ON h.musteri_id = m.musteri_id
+        """;
+        return jdbcTemplate.queryForList(sql);
+    }
+
+
+    public List<Map<String, Object>> getKartBorclariByMusteriId(Long musteriId) {
+        String sql = """
+            SELECT m.musteri_id, m.ad, m.soyad, h.hesap_id, h.hesap_adi, k.kart_id, k.kart_numarasi, kkb.borc_tutari, kkb.son_odeme_tarihi, kkb.odenen_tutar
+            FROM kredi_karti_borclari kkb
+            JOIN kartlar k ON kkb.kart_id = k.kart_id
+            JOIN hesaplar h ON k.hesap_id = h.hesap_id
+            JOIN musteriler m ON h.musteri_id = m.musteri_id
+            WHERE m.musteri_id = ?
+        """;
+        return jdbcTemplate.queryForList(sql, musteriId);
+    }
+
+
     public KrediKartiBorclari getBorcById(Long borcId) {
         String sql = "SELECT * FROM kredi_karti_borclari WHERE borc_id = ?";
         return jdbcTemplate.queryForObject(sql, new KrediKartiBorclariRowMapper(), borcId);
     }
 
-    // Borç Güncelleme
+
     public void updateBorc(KrediKartiBorclari borc) {
         String sql = "UPDATE kredi_karti_borclari SET borc_tutari = ?, son_odeme_tarihi = ?, odenen_tutar = ? WHERE borc_id = ?";
         jdbcTemplate.update(sql,
@@ -50,13 +75,13 @@ public class KrediKartiBorclariDAO {
                 borc.getBorcId());
     }
 
-    // Borç Silme
+
     public void deleteBorc(Long borcId) {
         String sql = "DELETE FROM kredi_karti_borclari WHERE borc_id = ?";
         jdbcTemplate.update(sql, borcId);
     }
 
-    // RowMapper Sınıfı
+
     private static class KrediKartiBorclariRowMapper implements RowMapper<KrediKartiBorclari> {
         @Override
         public KrediKartiBorclari mapRow(ResultSet rs, int rowNum) throws SQLException {

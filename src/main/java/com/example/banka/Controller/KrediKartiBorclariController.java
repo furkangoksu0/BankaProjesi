@@ -5,6 +5,7 @@ import com.example.banka.Service.KrediKartiBorclariService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/krediKartiBorclari")
@@ -26,6 +27,16 @@ public class KrediKartiBorclariController {
         return krediKartiBorclariService.getAllBorclar();
     }
 
+    @GetMapping("/tum")
+    public List<Map<String, Object>> getAllMusteriKartBorclari() {
+        return krediKartiBorclariService.getAllMusteriKartBorclari();
+    }
+
+
+    @GetMapping("/musteri/{musteriId}")
+    public List<Map<String, Object>> getKartBorclariByMusteriId(@PathVariable Long musteriId) {
+        return krediKartiBorclariService.getKartBorclariByMusteriId(musteriId);
+    }
     @GetMapping("/{id}")
     public KrediKartiBorclari getBorcById(@PathVariable("id") Long borcId) {
         return krediKartiBorclariService.getBorcById(borcId);

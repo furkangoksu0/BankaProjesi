@@ -31,6 +31,7 @@ public class SubelerController {
     public List<Map<String, Object>> getSubeIslemleri(@PathVariable Long subeId) {
         return subelerService.getSubeIslemleri(subeId);
     }
+
     @GetMapping("/{id}")
     public Subeler getSubeById(@PathVariable("id") Long subeId) {
         return subelerService.getSubeById(subeId);

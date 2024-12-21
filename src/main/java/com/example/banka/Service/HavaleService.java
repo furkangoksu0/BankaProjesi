@@ -5,6 +5,7 @@ import com.example.banka.Entity.Havale;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class HavaleService {
@@ -21,6 +22,18 @@ public class HavaleService {
 
     public List<Havale> getAllHavale() {
         return havaleDAO.getAllHavale();
+    }
+
+    public List<Map<String, Object>> getAllHavaleByMusteri() {
+        return havaleDAO.getAllHavaleByMusteri();
+    }
+
+    public List<Map<String, Object>> getHavaleByMusteriId(Long musteriId) {
+        return havaleDAO.getHavaleByMusteriId(musteriId);
+    }
+
+    public List<Map<String, Object>> getHavaleByHesapId(Long hesapId) {
+        return havaleDAO.getHavaleByHesapId(hesapId);
     }
 
     public Havale getHavaleById(Long havaleId) {

@@ -40,6 +40,7 @@ public class SubelerDAO {
         String sql = "SELECT * FROM subeler WHERE sube_id = ?";
         return jdbcTemplate.queryForObject(sql, new SubelerRowMapper(), subeId);
     }
+
     public List<Map<String, Object>> getSubeIslemleri(Long subeId) {
         String sql = """
             SELECT 
